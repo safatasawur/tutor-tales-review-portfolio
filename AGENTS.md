@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Reviews live only in `src/data/reviewsData.ts`, copied verbatim from Preply; never invent, rewrite or sync them live — the owner edits this file by hand.
+- Homepage featured reviews come from `getFeaturedReviews()` (capped at three); don't hardcode review text in components.
+- Site-wide constants (Preply/booking URL, subjects, exam badges) live in `src/data/siteData.ts` so copy changes stay in one place.
+- Shared header, footer and page transition live in `src/routes/__root.tsx`; homepage sections are separate components in `src/components/home/`.
+- External Preply links always open in a new tab via `ExternalPreplyButton` or `target="_blank" rel="noopener noreferrer"`.
+- Motion uses the `motion` package under `<MotionConfig reducedMotion="user">`; keep animations subtle, no carousels.

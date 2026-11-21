@@ -4,14 +4,18 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { MotionConfig, motion } from "motion/react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 function NotFoundComponent() {
   return (
@@ -75,22 +79,31 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    // Replace these placeholders with the app's name and description when first building the app.
-    // Each content route, / included, must still set its own head(). Never add og:image or
-    // twitter:image here: every page without its own would inherit the root's preview image.
+    // Each content route, / included, sets its own head(). Never add og:image here.
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Safa — Computer Science & Programming Tutor" },
+      {
+        name: "description",
+        content: "Online Computer Science and programming lessons with Safa: IGCSE, GCSE, IB, A-Level, AP and university CS.",
+      },
+      { name: "author", content: "Safa" },
+      { property: "og:title", content: "Safa — Computer Science & Programming Tutor" },
+      {
+        property: "og:description",
+        content: "Online Computer Science and programming lessons with Safa: IGCSE, GCSE, IB, A-Level, AP and university CS.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@500;600&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -120,11 +133,35 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Skip the entrance animation on the first (server-rendered) page; animate later page changes.
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    isFirstRender.current = false;
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <MotionConfig reducedMotion="user">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:border-2 focus:border-ink focus:bg-pink focus:px-4 focus:py-2 focus:font-semibold"
+        >
+          Skip to content
+        </a>
+        <SiteHeader />
+        <motion.main
+          id="main"
+          key={pathname}
+          initial={isFirstRender.current ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </motion.main>
+        <SiteFooter />
+      </MotionConfig>
     </QueryClientProvider>
   );
 }

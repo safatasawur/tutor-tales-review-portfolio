@@ -1,23 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { HeroSection } from "@/components/home/HeroSection";
+import { PhilosophySection } from "@/components/home/PhilosophySection";
+import { TeachingSection } from "@/components/home/TeachingSection";
+import { FeaturedReviewsSection } from "@/components/home/FeaturedReviewsSection";
+import { AboutSection } from "@/components/home/AboutSection";
+import { BookingSection } from "@/components/home/BookingSection";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "Safa — Computer Science & Programming Tutor";
+const description =
+  "Learn Computer Science with Safa: IGCSE, GCSE, IB, A-Level and AP exam prep, university CS, Python, Java, C++ and web development.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <HeroSection />
+      <PhilosophySection />
+      <TeachingSection />
+      <FeaturedReviewsSection />
+      <AboutSection />
+      <BookingSection />
+    </>
   );
 }

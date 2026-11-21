@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -16,11 +16,19 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        /* Brand: pink primary action with ink border and offset shadow. */
+        pink: "rounded-full border-2 border-ink bg-pink font-semibold text-ink shadow-ink-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-ink active:translate-x-0 active:translate-y-0 active:shadow-none motion-reduce:transform-none",
+        /* Brand: white secondary action with ink border. */
+        paper:
+          "rounded-full border-2 border-ink bg-paper font-semibold text-ink shadow-ink-sm hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-pink-mist hover:shadow-ink active:translate-x-0 active:translate-y-0 active:shadow-none motion-reduce:transform-none",
+        /* Brand: solid ink action. */
+        ink: "rounded-full border-2 border-ink bg-ink font-semibold text-paper shadow-pink hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0 active:translate-y-0 active:shadow-none motion-reduce:transform-none",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
+        lg: "h-12 px-6 text-base",
+        xl: "h-14 px-8 text-base sm:text-lg",
         icon: "h-9 w-9",
       },
     },
