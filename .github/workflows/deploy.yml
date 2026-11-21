@@ -40,8 +40,14 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
         run: npm run build -- --base="/${REPO_NAME}/"
 
-      - name: Support direct page links
-        run: cp dist/index.html dist/404.html
+      - name: Check build output
+        run: |
+           echo "Current directory:"
+           pwd
+           echo "Project files:"
+           ls -la
+           echo "Build output folders:"
+           find . -maxdepth 4 -name index.html -not -path "./node_modules/*"
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
