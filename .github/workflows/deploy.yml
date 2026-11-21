@@ -46,16 +46,15 @@ jobs:
            pwd
            echo "Project files:"
            ls -la
-           echo "Build output folders:"
+           echo "Build directories:"
            find . -maxdepth 4 -name index.html -not -path "./node_modules/*"
+           echo "Package build script:"
+           npm pkg get scripts.build
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload website
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+      -
 
   deploy:
     needs: build
